@@ -27,24 +27,58 @@ function Book(title, author, read) {
 	this.read = read;
 }
 
-// function newBook(title, author, read) {
-// 	myBooks.push(new Book(title, author, read));
-// }
+//function to add a new book
+const form = document.querySelector('#addBook');
+form.addEventListener('submit', function (event) {
+	event.preventDefault();
 
-// let displayBooks = function() {
+	const title = document.querySelector('#title').value;
+	const author = document.querySelector('#author').value;
+	const read = document.querySelector('#read').value;
 
-// }
+	// const title = titleInput.value;
+	// const author = authorInput.value;
+	// const read = readInput.value;
 
-myBooks.forEach(function (book) {
-	let newDiv = document.createElement('div');
-	newDiv.className = 'book';
-	for (let key in book) {
-		if (book.hasOwnProperty(key)) {
-			let item = book[key];
-			let paragraph = document.createElement('p');
-			paragraph.textContent = `${item}`;
-			newDiv.appendChild(paragraph);
-		}
+	let addBook = new Book(title, author, read);
+	addBook;
+	myBooks.push(addBook);
+	updateBookDisplay();
+});
+
+let displayBooks = function () {};
+
+function updateBookDisplay() {
+	while (bookContainer.firstChild) {
+		bookContainer.removeChild(bookContainer.firstChild);
 	}
-	bookContainer.appendChild(newDiv);
+
+	myBooks.forEach(function (book) {
+		let newDiv = document.createElement('div');
+		newDiv.className = 'book';
+		for (let key in book) {
+			if (book.hasOwnProperty(key)) {
+				let item = book[key];
+				let paragraph = document.createElement('p');
+				paragraph.textContent = `${item}`;
+				newDiv.appendChild(paragraph);
+			}
+		}
+		bookContainer.appendChild(newDiv);
+	});
+}
+
+updateBookDisplay();
+
+//new book modal
+const dialog = document.querySelector('dialog');
+const showButton = document.querySelector('.addBook');
+const closeButton = document.querySelector('dialog button');
+
+showButton.addEventListener('click', () => {
+	dialog.showModal();
+});
+
+closeButton.addEventListener('click', () => {
+	dialog.close();
 });

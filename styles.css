@@ -51,3 +51,16 @@ body {
 .book p {
 	text-transform: capitalize;
 }
+
+dialog {
+	height: 400px;
+	width: 300px;
+	border: 2px solid white;
+	border-radius: 15px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	padding: 10px;
+}
+
+dialog::backdrop {
+	backdrop-filter: blur(10px);
+}
