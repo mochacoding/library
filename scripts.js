@@ -46,8 +46,7 @@ form.addEventListener('submit', function (event) {
 	updateBookDisplay();
 });
 
-let displayBooks = function () {};
-
+//function to populate books into viewport
 function updateBookDisplay() {
 	while (bookContainer.firstChild) {
 		bookContainer.removeChild(bookContainer.firstChild);
@@ -64,10 +63,17 @@ function updateBookDisplay() {
 				newDiv.appendChild(paragraph);
 			}
 		}
+		let del = document.createElement('button');
+		del.classList.add('deleteBook');
+		del.textContent = 'Delete';
+		newDiv.appendChild(del);
 		bookContainer.appendChild(newDiv);
+		newDiv.setAttribute('data-index', myBooks.indexOf(book));
+		newDiv.setAttribute('id', myBooks.indexOf(book));
 	});
 }
 
+//initialize book display
 updateBookDisplay();
 
 //new book modal
@@ -82,3 +88,44 @@ showButton.addEventListener('click', () => {
 closeButton.addEventListener('click', () => {
 	dialog.close();
 });
+
+//delete book object
+
+bookContainer.addEventListener('click', (event) => {
+	if (event.target.tagName === 'BUTTON') {
+		const deleteButton = event.target;
+		const bookElement = deleteButton.closest('.book');
+		index = bookElement.getAttribute('data-index');
+		myBooks.splice(index, 1);
+		updateBookDisplay();
+	}
+});
+
+// const booksToDelete = document.querySelectorAll('.book');
+// booksToDelete.forEach((button) => {
+// 	button.addEventListener('click', (event) => {
+// 		const deleteButton = event.target;
+// 		const bookElement = deleteButton.closest('.book');
+// 		index = bookElement.getAttribute('data-index');
+// 		myBooks.splice(index, 1);
+// 		console.log(index);
+// 		updateBookDisplay();
+// 	});
+// });
+
+/*
+const bookDelete = document.getElementsByClassName('book');
+bookDelete.forEach(function (element) {
+	const deleteButton = element.querySelector('button');
+	deleteButton.addEventListener('click', handleDeleteEvent);
+});
+
+function handleDeleteEvent(event) {
+	const deleteButton = event.target;
+	const bookElement = deleteButton.closest('.book');
+	index = bookElement.getAttribute('data-index');
+	myBooks.splice(index, 1);
+	console.log(index);
+	updateBookDisplay();
+}
+*/
