@@ -25,6 +25,7 @@ function Book(title, author, read) {
 	this.title = title;
 	this.author = author;
 	this.read = read;
+	this.toggleRead = function () {};
 }
 
 //function to add a new book
@@ -56,7 +57,14 @@ function updateBookDisplay() {
 		let newDiv = document.createElement('div');
 		newDiv.className = 'book';
 		for (let key in book) {
-			if (book.hasOwnProperty(key)) {
+			if (book.hasOwnProperty(key) && key == 'read') {
+				let item = book[key];
+				let div = document.createElement('div');
+				let button = document.createElement('button');
+				newDiv.appendChild(div);
+				button.textContent = `${item}`;
+				div.appendChild(button);
+			} else {
 				let item = book[key];
 				let paragraph = document.createElement('p');
 				paragraph.textContent = `${item}`;
