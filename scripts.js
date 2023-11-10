@@ -1,20 +1,12 @@
-const harryPotter = {
-	title: "The Sorcerer's Stone",
-	author: 'J.K. Rowling',
-	read: 'read',
-};
+const harryPotter = new Book("The Sorcerer's Stone", 'J.K. Rowling', 'Read');
 
-const theSecretPlace = {
-	title: 'The Secret Place',
-	author: 'Tana French',
-	read: 'read',
-};
+const theSecretPlace = new Book('The Secret Place', 'Tana French', 'Read');
 
-const noDramaDiscipline = {
-	title: 'No Drama Discipline',
-	author: 'Daniel J. Siegel & Tina Payne Bryson',
-	read: 'have not read',
-};
+const noDramaDiscipline = new Book(
+	'No Drama Discipline',
+	'Daniel J. Siegel & Tina Payne Bryson',
+	'Not Read'
+);
 
 const myBooks = [harryPotter, theSecretPlace, noDramaDiscipline];
 
@@ -25,7 +17,15 @@ function Book(title, author, read) {
 	this.title = title;
 	this.author = author;
 	this.read = read;
-	this.toggleRead = function () {};
+	this.toggleRead = function () {
+		if (this.read == 'Not Read') {
+			this.read = 'Read';
+			updateBookDisplay();
+		} else if (this.read == 'Read') {
+			this.read = 'Not Read';
+			updateBookDisplay();
+		}
+	};
 }
 
 //function to add a new book
@@ -61,20 +61,25 @@ function updateBookDisplay() {
 				let item = book[key];
 				let div = document.createElement('div');
 				let button = document.createElement('button');
+				button.classList.add('readBook');
 				newDiv.appendChild(div);
 				button.textContent = `${item}`;
 				div.appendChild(button);
-			} else {
+			} else if (book.hasOwnProperty(key) && key != 'toggleRead') {
 				let item = book[key];
 				let paragraph = document.createElement('p');
 				paragraph.textContent = `${item}`;
 				newDiv.appendChild(paragraph);
 			}
 		}
+
+		let div = document.createElement('div');
+		div.classList.add('deleteDiv');
 		let del = document.createElement('button');
 		del.classList.add('deleteBook');
 		del.textContent = 'Delete';
-		newDiv.appendChild(del);
+		newDiv.appendChild(div);
+		div.appendChild(del);
 		bookContainer.appendChild(newDiv);
 		newDiv.setAttribute('data-index', myBooks.indexOf(book));
 		newDiv.setAttribute('id', myBooks.indexOf(book));
@@ -88,6 +93,7 @@ updateBookDisplay();
 const dialog = document.querySelector('dialog');
 const showButton = document.querySelector('.addBook');
 const closeButton = document.querySelector('dialog button');
+const deleteDiv = document.querySelector('.deleteDiv');
 
 showButton.addEventListener('click', () => {
 	dialog.showModal();
@@ -100,14 +106,28 @@ closeButton.addEventListener('click', () => {
 //delete book object
 
 bookContainer.addEventListener('click', (event) => {
-	if (event.target.tagName === 'BUTTON') {
+	if (
+		// event.target.tagName === 'BUTTON' &&
+		event.target.className === 'deleteBook'
+	) {
 		const deleteButton = event.target;
 		const bookElement = deleteButton.closest('.book');
 		index = bookElement.getAttribute('data-index');
 		myBooks.splice(index, 1);
 		updateBookDisplay();
+	} else if (event.target.className === 'readBook') {
+		const readButton = event.target;
+		const bookElement = readButton.closest('.book');
+		index = bookElement.getAttribute('id');
+		thisBook = myBooks[index];
+		thisBook.toggleRead();
+		console.log(thisBook);
 	}
 });
+
+//read status update
+
+// const readButton = document.querySelector('');
 
 // const booksToDelete = document.querySelectorAll('.book');
 // booksToDelete.forEach((button) => {
